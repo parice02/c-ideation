@@ -16,11 +16,11 @@ class Contact(models.Model):
     gender = models.CharField(
         "Sexe", choices=[('h', 'Homme'), ('f', 'Femme')], max_length=1)
     work_place = models.CharField(
-        'Lieu de travaille/Établissement', max_length=30)
-    job = models.CharField("Profession", max_length=30,)
+        'Établissement', max_length=30)
+    job = models.CharField("UFR", max_length=30,)
     phone = models.CharField("Téléphone", max_length=30, unique=True)
     email = models.CharField("Courriel", max_length=30, unique=True)
-    field = models.CharField("Champs d'activité", max_length=30)
+    field = models.CharField("Département", max_length=30)
 
 
 class QRCodeImage(models.Model):
