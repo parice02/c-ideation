@@ -35,7 +35,7 @@ def index(request):
             qr_image.save(path, extention)
 
             return render(request, 'qrcode.html',
-                          {'image': f'https://media.c-ideation.herokuapp.com/media/{p}'})
+                          {'image': f'{settings.MEDIA_ROOT}/{p}'})
     return render(request, 'index.html', {'contact': contact})
 
 
