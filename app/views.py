@@ -33,6 +33,7 @@ def index(request):
                 _contact['last_name'] + '.' + extention
             path = settings.MEDIA_ROOT / p
             qr_image.save(path, extention)
+            print(settings.MEDIA_ROOT)
 
             return render(request, 'qrcode.html',
                           {'image': f'{settings.MEDIA_ROOT}/{p}'})
