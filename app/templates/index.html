@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+{% block title %}QRCode{% endblock %}
+{% block bodyId%}index{% endblock %}
+{% block contenu %}
+<div class="col-12" >
+		<div class="col-12" style="margin: auto;">{% crispy contact %}</div>
+</div>
+{% endblock %}
+{% block script %}
+{% endblock %}

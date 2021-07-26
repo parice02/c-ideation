@@ -1,0 +1,45 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Mohamed Zeba">
+	<meta name="description" content="">
+	<meta name="keywords" content="stage rapport sidinfor">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<title>sidinfor - {% block title %}{% endblock %}</title>
+	<link rel="icon" type="image/ico" href="{% static 'img/favicon.ico' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+
+	{% block CSSBase %}{% endblock %}
+	{% block autreCSS%}{% endblock %}
+</head>
+
+<body id="{% block bodyId %}{% endblock %}">
+	{% block headerContenu %}
+	<header>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<div class="collapse navbar-collapse">
+				<h2 style="color: white;;">
+					Liste de présence au camp d'idéation
+				</h2>
+			</div>
+		</nav>
+	</header>
+	{% endblock %}
+
+	<div style="margin-top: 5em;">
+		{% block contenu %}{% endblock %}
+	</div>
+	<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/qrcode.min.js' %}"></script>
+	{% block script %}{% endblock %}
+	<noscript>
+		JavaScript a été désactivé ou votre navigateur ne le supporte pas.
+	</noscript>
+</body>
+
+</html>
