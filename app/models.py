@@ -24,8 +24,15 @@ class Contact(models.Model):
     phone = models.CharField("Téléphone", max_length=30, unique=True)
     email = models.CharField("Courriel", max_length=30, unique=True)
     field = models.CharField("Département", max_length=30)
+    arrived_at = models.ManyToManyField(
+        "Arrived", "visitors arrived", null=True, blank=True
+    )
 
 
 class QRCodeImage(models.Model):
     image = models.ImageField(upload_to=qr_path)
     info = models.ForeignKey(Contact, on_delete=models.CASCADE)
+
+
+# class Arrived(models.Model):
+#    arrived_at = models.DateTimeField()

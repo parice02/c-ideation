@@ -1,10 +1,17 @@
 from django.shortcuts import render
-from django.http import JsonResponse
 from django.core import serializers
 import qrcode
 import json
 from django.core.files.uploadedfile import SimpleUploadedFile
 import io
+from rest_framework.views import APIView
+from rest_framework.parsers import JSONParser
+from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from django.http import Http404
 
 from .forms import ContactForm, QRCOdeForm
 
@@ -14,7 +21,7 @@ from .forms import ContactForm, QRCOdeForm
 
 def index(request):
     contact = ContactForm(data=request.POST if request.POST else None)
-    if request.POST:
+    if request.method == "POST":
         if contact.is_valid():
             contact.save()
             _contact = serializers.serialize("json", [contact.instance])
@@ -24,18 +31,12 @@ def index(request):
             _contact = _contact["fields"]
             _contact = {
                 "id": _contact["id"],
-                "first_name": _contact["first_name"],
-                "last_name": _contact["last_name"],
+                "api": "ideation_camp_2021",
                 "phone": _contact["phone"],
             }
             data_str = json.dumps(_contact)
             qr_image = generate_qr(data_str)
-            file_name = (
-                str(_contact["id"])
-                + _contact["first_name"]
-                + _contact["phone"]
-                + ".png"
-            )
+            file_name = str(_contact["id"]) + _contact["phone"] + ".png"
 
             buf = io.BytesIO()
             qr_image.save(buf, "png")
@@ -68,3 +69,10 @@ def generate_qr(data):
     qr.add_data(data)
     qr.make(fit=True)
     return qr.make_image(fill_color="black", back_color="white")
+
+
+#def check_visitor(request):
+#    if request.method == "GET":
+#        if "api" in request.GET and request.GET["api"] == "ideation_camp_2021":
+#            pk = request.GET["pk"]
+
