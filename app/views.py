@@ -3,10 +3,10 @@ from django.http import JsonResponse
 from django.core import serializers
 import qrcode
 import json
+from django.core.files.uploadedfile import SimpleUploadedFile
+import io
 
-from qrcodeserve import settings
-from .forms import ContactForm
-from .models import Contact, QRCodeImage
+from .forms import ContactForm, QRCOdeForm
 
 
 # Create your views here.
@@ -17,28 +17,44 @@ def index(request):
     if request.POST:
         if contact.is_valid():
             contact.save()
-            _contact = serializers.serialize('json', [contact.instance])
+            _contact = serializers.serialize("json", [contact.instance])
             _contact = json.loads(_contact)
             _contact = _contact[0]
-            _contact['fields']["id"] = _contact['pk']
-            _contact = _contact['fields']
-            _contact = {"id": _contact['id'],
-                        'first_name': _contact['first_name'],
-                        "last_name": _contact['last_name'],
-                        "phone": _contact['phone']}
+            _contact["fields"]["id"] = _contact["pk"]
+            _contact = _contact["fields"]
+            _contact = {
+                "id": _contact["id"],
+                "first_name": _contact["first_name"],
+                "last_name": _contact["last_name"],
+                "phone": _contact["phone"],
+            }
             data_str = json.dumps(_contact)
             qr_image = generate_qr(data_str)
-            extention = 'png'
-            p = _contact['first_name'] + \
-                _contact['last_name'] + '.' + extention
-            path = settings.MEDIA_ROOT / p
-            qr_image.save(path, extention)
+            file_name = (
+                str(_contact["id"])
+                + _contact["first_name"]
+                + _contact["phone"]
+                + ".png"
+            )
 
-            print(path)
+            buf = io.BytesIO()
+            qr_image.save(buf, "png")
+            byte_img = buf.getvalue()
 
-            return render(request, 'qrcode.html',
-                          {'image': f'http://media.c-ideation.herokuapp.com/media/{p}'})
-    return render(request, 'index.html', {'contact': contact})
+            qr_code = QRCOdeForm(
+                data={"info": contact.instance},
+                files={"image": SimpleUploadedFile(file_name, byte_img)},
+            )
+            print(qr_code.errors.as_json())
+            if qr_code.is_valid():
+                qr_code.save()
+
+            return render(
+                request,
+                "qrcode.html",
+                {"image": qr_code.instance},
+            )
+    return render(request, "index.html", {"contact": contact})
 
 
 def generate_qr(data):

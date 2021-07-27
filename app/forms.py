@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.layout import Layout, Div, Submit, Reset, ButtonHolder
 from crispy_forms.helper import FormHelper
-from .models import Contact
+from .models import Contact, QRCodeImage
 
 
 class ContactForm(forms.ModelForm):
@@ -44,4 +44,12 @@ class ContactForm(forms.ModelForm):
 
     class Meta:
         model = Contact
+        exclude = ('id',)
+
+
+class QRCOdeForm(forms.ModelForm):
+    """
+    """
+    class Meta:
+        model = QRCodeImage
         exclude = ('id',)
