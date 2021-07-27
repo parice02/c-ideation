@@ -33,6 +33,8 @@ def index(request):
                 "id": _contact["id"],
                 "api": "ideation_camp_2021",
                 "phone": _contact["phone"],
+                "first_name": _contact["first_name"],
+                "last_name": _contact["last_name"],
             }
             data_str = json.dumps(_contact)
             qr_image = generate_qr(data_str)
@@ -71,8 +73,7 @@ def generate_qr(data):
     return qr.make_image(fill_color="black", back_color="white")
 
 
-#def check_visitor(request):
+# def check_visitor(request):
 #    if request.method == "GET":
 #        if "api" in request.GET and request.GET["api"] == "ideation_camp_2021":
 #            pk = request.GET["pk"]
-
