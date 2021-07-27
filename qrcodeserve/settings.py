@@ -44,16 +44,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd Party Libraries
-    "rest_framework",
-    "corsheaders",
-    "rest_framework.authtoken",
+    # "rest_framework",
+    # "corsheaders",
+    # "rest_framework.authtoken",
     # cryspy
     "crispy_forms",
     "app",
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
+    #"corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

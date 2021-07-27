@@ -16,14 +16,22 @@ class Contact(models.Model):
     gender = models.CharField(
         "Sexe", choices=[("h", "Homme"), ("f", "Femme")], max_length=1
     )
-    work_place = models.CharField("Établissement", max_length=30)
+    work_place = models.CharField("Établissement", max_length=50)
     job = models.CharField(
-        "UFR",
-        max_length=30,
+        "Domaine d'études",
+        max_length=100,
     )
     phone = models.CharField("Téléphone", max_length=30, unique=True)
     email = models.CharField("Courriel", max_length=30, unique=True)
-    field = models.CharField("Département", max_length=30)
+    field = models.CharField(
+        "Niveau",
+        max_length=10,
+        choices=[
+            ("licence", "Licence"),
+            ("master", "Master"),
+            ("doctorat", "Doctorat"),
+        ],
+    )
     # arrived_at = models.ManyToManyField(
     #        "Arrived", "visitors arrived", null=True, blank=True
     #    )
