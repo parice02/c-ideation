@@ -4,6 +4,7 @@ import qrcode
 import json
 from django.core.files.uploadedfile import SimpleUploadedFile
 import io
+
 # from rest_framework.views import APIView
 # from rest_framework.parsers import JSONParser
 # from rest_framework import viewsets, permissions
@@ -29,6 +30,7 @@ def index(request):
             _contact = _contact[0]
             _contact["fields"]["id"] = _contact["pk"]
             _contact = _contact["fields"]
+            _contact["api"] = "ideation_camp_ujkz"
             data_str = json.dumps(_contact)
             qr_image = generate_qr(data_str)
             file_name = str(_contact["id"]) + "-" + _contact["phone"] + ".png"
