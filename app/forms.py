@@ -47,7 +47,7 @@ class ContactForm(forms.ModelForm):
 
     class Meta:
         model = Contact
-        exclude = ("id", "arrived_at")
+        exclude = ("id",)
 
 
 class QRCOdeForm(forms.ModelForm):
