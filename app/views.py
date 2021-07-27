@@ -4,14 +4,14 @@ import qrcode
 import json
 from django.core.files.uploadedfile import SimpleUploadedFile
 import io
-from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser
-from rest_framework import viewsets, permissions
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
-from django.http import Http404
+# from rest_framework.views import APIView
+# from rest_framework.parsers import JSONParser
+# from rest_framework import viewsets, permissions
+# from rest_framework.authentication import TokenAuthentication
+# from rest_framework.authtoken.views import ObtainAuthToken
+# from rest_framework.authtoken.models import Token
+# from rest_framework.response import Response
+# from django.http import Http404
 
 from .forms import ContactForm, QRCOdeForm
 
@@ -29,20 +29,13 @@ def index(request):
             _contact = _contact[0]
             _contact["fields"]["id"] = _contact["pk"]
             _contact = _contact["fields"]
-            _contact = {
-                "id": _contact["id"],
-                "api": "ideation_camp_2021",
-                "phone": _contact["phone"],
-                "first_name": _contact["first_name"],
-                "last_name": _contact["last_name"],
-            }
             data_str = json.dumps(_contact)
             qr_image = generate_qr(data_str)
-            file_name = str(_contact["id"]) + _contact["phone"] + ".png"
+            file_name = str(_contact["id"]) + "-" + _contact["phone"] + ".png"
 
-            buf = io.BytesIO()
-            qr_image.save(buf, "png")
-            byte_img = buf.getvalue()
+            image_buffer = io.BytesIO()
+            qr_image.save(image_buffer, "png")
+            byte_img = image_buffer.getvalue()
 
             qr_code = QRCOdeForm(
                 data={"info": contact.instance},
