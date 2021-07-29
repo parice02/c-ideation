@@ -129,5 +129,4 @@ dmypy.json
 .pyre/
 
 .vscode/
-app/__pycache__/
-qrcode/__pycache__/
+*/__pycache__/

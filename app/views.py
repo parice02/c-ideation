@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.core import serializers
+from django.db.models import Q
 import qrcode
 import json
 from django.core.files.uploadedfile import SimpleUploadedFile
+
 import io
 
 # from rest_framework.views import APIView
@@ -14,8 +16,8 @@ import io
 # from rest_framework.response import Response
 # from django.http import Http404
 
-from .forms import ContactForm, QRCOdeForm
-
+from .forms import ContactForm, QRCodeForm, RecoveryInfo
+from .models import QRCodeImage
 
 # Create your views here.
 
@@ -39,11 +41,10 @@ def index(request):
             qr_image.save(image_buffer, "png")
             byte_img = image_buffer.getvalue()
 
-            qr_code = QRCOdeForm(
+            qr_code = QRCodeForm(
                 data={"info": contact.instance},
                 files={"image": SimpleUploadedFile(file_name, byte_img)},
             )
-            print(qr_code.errors.as_json())
             if qr_code.is_valid():
                 qr_code.save()
 
@@ -66,6 +67,17 @@ def generate_qr(data):
     qr.add_data(data)
     qr.make(fit=True)
     return qr.make_image(fill_color="black", back_color="white")
+
+
+def recover_qrcode(request):
+    """ """
+    recuperation = RecoveryInfo(data=request.POST if request.POST else None)
+    if request.method == "POST":
+        if recuperation.is_valid():
+            field = recuperation.cleaned_data.get("field")
+            c = QRCodeImage.objects.get(Q(info__phone=field) | Q(info__email=field))
+            return render(request, "qrcode.html", {"image": c})
+    return render(request, "recovery.html", {"recuperation": recuperation})
 
 
 # def check_visitor(request):
